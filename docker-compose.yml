@@ -1,0 +1,19 @@
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    container_name: pos-api
+
+    ports:
+      - "8080:8080"
+
+    env_file:
+      - .env
+
+    volumes:
+      - .:/app
+
+    restart: unless-stopped
