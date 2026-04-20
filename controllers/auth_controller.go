@@ -16,15 +16,23 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
+type ResponseRequest struct {
+	Status  int `json:"status"`
+	Message string `json:"message"`
+	Data   string    `json:"data,omitempty"` // omitempty untuk mengabaikan jika kosong
+}
+
 func Login(c *gin.Context) {
 
 	var req LoginRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 
-		c.JSON(400, gin.H{
-			"error": "invalid request",
-		})
+		response := ResponseRequest{
+			Status: 400,
+			Message: "NOT-OK",
+			Data: "invalid request",
+		}
 
 		return
 	}
@@ -38,18 +46,22 @@ func Login(c *gin.Context) {
 
 	if result.Error != nil {
 
-		c.JSON(401, gin.H{
-			"error": "username not found",
-		})
+		response := ResponseRequest{
+			Status: 401,
+			Message: "NOT-OK",
+			Data: "username not found",
+		}
 
 		return
 	}
 
 	if user.Password != req.Password {
 
-		c.JSON(401, gin.H{
-			"error": "invalid password",
-		})
+		response := ResponseRequest{
+			Status: 401,
+			Message: "NOT-OK",
+			Data: "invalid password",
+		}
 
 		return
 	}
@@ -75,15 +87,21 @@ func Login(c *gin.Context) {
 
 	if err != nil {
 
-		c.JSON(500, gin.H{
-			"error": "token failed",
-		})
+		response := ResponseRequest{
+			Status: 500,
+			Message: "NOT-OK",
+			Data: "token failed",
+		}
 
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"token": tokenString,
-	})
+	response := ResponseRequest{
+		Status: 200,
+		Message: "OK",
+		Data: tokenString,
+	}
+
+	c.JSON(200, response)
 
 }

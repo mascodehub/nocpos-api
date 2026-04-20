@@ -9,7 +9,7 @@ type User struct {
 
 	Password string `json:"password" gorm:"column:password"`
 
-	IDOutlet string `json:"idoutlet" gorm:"column:idoutlet"`
+	AccessLevel string `json:"access_level" gorm:"column:access_level"`
 
 	Status string `json:"status" gorm:"column:status"`
 }
